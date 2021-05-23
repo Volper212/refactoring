@@ -1,0 +1,45 @@
+td, th {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+span
+{
+	text-decoration: underline;
+}
+
+tr td:nth-child(n+3) > input:hover, tr td:nth-child(n+3) > input:focus {
+    background-color: #c3b6b6;
+}
+
+button {
+    color: white;
+}
+
+
+button[data-action="dup"] {
+	background-color: #6b97ff;
+}
+
+button[data-action="dup"]:hover {
+	background-color: #3763ca;
+}
+
+
+button[data-action="del"] {
+	background-color: #ff8179;
+}
+
+button[data-action="del"]:hover {
+	background-color: #ef4e43;
+}
+
+
+button[data-action="clear"] {
+	background-color: #79ff8d;
+    color: black;
+}
+
+button[data-action="clear"]:hover {
+	background-color: #4cb55c;
+}
