@@ -1,20 +1,16 @@
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="style.css">
 <?php
-include './connect.php';
+include 'connect.php';
 
 $a = $sql->query('SELECT * FROM tab') ?: die('Nie udało się pobrać rekordów');
 
 $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
-
 ?>
 
 <script>
     let j = 0;
-    let one = 1;
     let idk = 1;
-    const stuff = <?php print json_encode($json); ?>;
-    let arr = new Array();
-    arr = JSON.parse(stuff);
+    const arr = <?= $json ?>;
 
     let html = '<table border><tbody>';
     for (let i = 0; i < arr.length; i++) {
@@ -30,23 +26,20 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
             </tr>`
         );
         j++;
-        one += 2;
         idk += 2;
     }
     html += '</tbody></table>';
 
-
     document.write(html);
-
 
     document.querySelector('table').addEventListener('input', klik);
     document.querySelector('table').addEventListener('click', klik);
 
     function klik(e) {
-        const getName = e.srcElement.getAttribute('name');
-        const getVal = e.srcElement.value;
-        const getId = e.srcElement.parentElement.parentElement.getAttribute('id');
-        const getAct = e.srcElement.getAttribute('data-action');
+        const getName = e.target.name;
+        const getVal = e.target.value;
+        const getId = e.target.parentElement.parentElement.id;
+        const getAct = e.target.dataset.action;
 
         switch (getAct) {
             case 'dup':
@@ -63,13 +56,11 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
         }
 
         if (getAct != 'dup') {
-
             fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`);
         } else {
             fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`)
                 .then(odp => odp.json())
                 .then(v => {
-
                     document.querySelector('tbody').insertAdjacentHTML("beforeend", (
                         `<tr id="${v[0][0]}">
                             <td class="numW">${j + 1}</td>
@@ -82,7 +73,6 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
                         </tr>`
                     ));
                     j++;
-
                 });
         }
 
