@@ -9,7 +9,6 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
 
 <script>
     let j = 0;
-    let idk = 1;
     const arr = <?= $json ?>;
 
     let html = '<table border><tbody>';
@@ -18,15 +17,14 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
             `<tr id="${row.id}">
                 <td class="numW">${index + 1}</td>
                 <td><input value="${row.id}" disabled></td>
-                <td><input value="${row.login}" name="${idk}" data-action="edit"></td>
-                <td><input value="${row.pass}" name="${idk + 1}" data-action="edit"></td>
+                <td><input value="${row.login}" name="1" data-action="edit"></td>
+                <td><input value="${row.pass}" name="2" data-action="edit"></td>
                 <td><button data-action="dup">duplikuj</button></td>
                 <td><button data-action="del">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
             </tr>`
         );
         j++;
-        idk += 2;
     });
     html += '</tbody></table>';
 
@@ -65,8 +63,8 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
                         `<tr id="${v[0][0]}">
                             <td class="numW">${j + 1}</td>
                             <td><input value="${v[0][0]}" disabled></td>
-                            <td><input value="${v[0][1]}" name="${idk}" data-action="edit"></td>
-                            <td><input value="${v[0][2]}" name="${idk + 1}" data-action="edit"></td>
+                            <td><input value="${v[0][1]}" name="1" data-action="edit"></td>
+                            <td><input value="${v[0][2]}" name="2" data-action="edit"></td>
                             <td><button data-action="dup">duplikuj</button></td>
                             <td><button data-action="del">x</button></td>
                             <td><button data-action="clear">wyczyść</button></td>
