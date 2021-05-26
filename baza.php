@@ -24,7 +24,17 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
 
     let html = '<table border><tbody>';
     for (let i = 0; i < arr.length; i++) {
-        html += '<tr id="' + arr[j].id + '"><td class="numW">' + (j + 1) + '</td><td><input value="' + arr[j].id + '" disabled></td>' + '<td><input id="id' + one + '" value="' + arr[j].login + '" name="' + idk + '" data-action="edit"></td>' + '<td><input id="id' + (one + 1) + '" value="' + arr[j].pass + '" name="' + (idk + 1) + '" data-action="edit"></td><td><button data-action="dup">duplikuj</button></td><td><button data-action="del">x</button></td><td><button data-action="clear">wyczyść</button></td></tr>';
+        html += (
+            `<tr id="${arr[j].id}">
+                <td class="numW">${j + 1}</td>
+                <td><input value="${arr[j].id}" disabled></td>
+                <td><input id="id${one}" value="${arr[j].login}" name="${idk}" data-action="edit"></td>
+                <td><input id="id${one + 1}" value="${arr[j].pass}" name="${idk + 1}" data-action="edit"></td>
+                <td><button data-action="dup">duplikuj</button></td>
+                <td><button data-action="del">x</button></td>
+                <td><button data-action="clear">wyczyść</button></td>
+            </tr>`
+        );
         j++;
         one += 2;
         idk += 2;
@@ -62,13 +72,23 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
 
         if (getAct != 'dup') {
 
-            fetch('odp.php?name=' + getName + '&val=' + getVal + '&id=' + getId + '&action=' + getAct);
+            fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`);
         } else {
-            fetch('odp.php?name=' + getName + '&val=' + getVal + '&id=' + getId + '&action=' + getAct)
+            fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`)
                 .then(odp => odp.json())
                 .then(v => {
 
-                    document.querySelector('tbody').insertAdjacentHTML("beforeend", '<tr id="' + v[0][0] + '"><td class="numW">' + (j + 1) + '</td><td><input value="' + v[0][0] + '" disabled></td>' + '<td><input id="id' + one + '" value="' + v[0][1] + '" name="' + idk + '" data-action="edit"></td>' + '<td><input id="id' + (one + 1) + '" value="' + v[0][2] + '" name="' + (idk + 1) + '" data-action="edit"></td><td><button data-action="dup">duplikuj</button></td><td><button data-action="del">x</button></td><td><button data-action="clear">wyczyść</button></td></tr>');
+                    document.querySelector('tbody').insertAdjacentHTML("beforeend", (
+                        `<tr id="${v[0][0]}">
+                            <td class="numW">${j + 1}</td>
+                            <td><input value="${v[0][0]}" disabled></td>
+                            <td><input id="id${one}" value="${v[0][1]}" name="${idk}" data-action="edit"></td>
+                            <td><input id="id${one + 1}" value="${v[0][2]}" name="${idk + 1}" data-action="edit"></td>
+                            <td><button data-action="dup">duplikuj</button></td>
+                            <td><button data-action="del">x</button></td>
+                            <td><button data-action="clear">wyczyść</button></td>
+                        </tr>`
+                    ));
                     j++;
                     console.log(v);
 
