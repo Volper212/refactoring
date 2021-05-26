@@ -16,8 +16,6 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
     let arr = new Array();
     arr = JSON.parse(stuff);
 
-    console.log(arr[0].pass);
-
     let html = '<table border><tbody>';
     for (let i = 0; i < arr.length; i++) {
         html += (
@@ -45,11 +43,9 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
     document.querySelector('table').addEventListener('click', klik);
 
     function klik(e) {
-        console.log(e.srcElement);
         const getName = e.srcElement.getAttribute('name');
         const getVal = e.srcElement.value;
         const getId = e.srcElement.parentElement.parentElement.getAttribute('id');
-        console.log(getId);
         const getAct = e.srcElement.getAttribute('data-action');
 
         switch (getAct) {
@@ -86,7 +82,6 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
                         </tr>`
                     ));
                     j++;
-                    console.log(v);
 
                 });
         }
