@@ -13,13 +13,13 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
     const arr = <?= $json ?>;
 
     let html = '<table border><tbody>';
-    for (let i = 0; i < arr.length; i++) {
+    arr.forEach((row, index) => {
         html += (
-            `<tr id="${arr[j].id}">
-                <td class="numW">${j + 1}</td>
-                <td><input value="${arr[j].id}" disabled></td>
-                <td><input value="${arr[j].login}" name="${idk}" data-action="edit"></td>
-                <td><input value="${arr[j].pass}" name="${idk + 1}" data-action="edit"></td>
+            `<tr id="${row.id}">
+                <td class="numW">${index + 1}</td>
+                <td><input value="${row.id}" disabled></td>
+                <td><input value="${row.login}" name="${idk}" data-action="edit"></td>
+                <td><input value="${row.pass}" name="${idk + 1}" data-action="edit"></td>
                 <td><button data-action="dup">duplikuj</button></td>
                 <td><button data-action="del">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
@@ -27,7 +27,7 @@ $json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
         );
         j++;
         idk += 2;
-    }
+    });
     html += '</tbody></table>';
 
     document.write(html);
