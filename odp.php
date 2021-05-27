@@ -9,9 +9,7 @@ switch ($_GET['action']) {
         break;
     case 'duplicate':
         $database->exec('INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id=' . $_GET['id']);
-        $lastRow = $database->query('SELECT id, login, pass FROM tab ORDER BY id DESC LIMIT 1');
-
-        echo json_encode($lastRow->fetchAll(PDO::FETCH_NUM));
+        echo $database->lastInsertId();
         break;
     case 'delete':
         $database->exec('DELETE FROM tab WHERE id=' . $_GET['id']);

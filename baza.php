@@ -45,18 +45,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
             case 'duplicate':
                 request
                     .then(response => response.json())
-                    .then(data => {
-                        tbody.insertAdjacentHTML("beforeend",
-                            `<tr>
-                                <td class="row-number">${tbody.children.length + 1}</td>
-                                <td><input value="${data[0][0]}" class="id" disabled></td>
-                                <td><input value="${data[0][1]}" name="1" data-action="edit"></td>
-                                <td><input value="${data[0][2]}" name="2" data-action="edit"></td>
-                                <td><button data-action="duplicate">duplikuj</button></td>
-                                <td><button data-action="delete">x</button></td>
-                                <td><button data-action="clear">wyczyść</button></td>
-                            </tr>`
-                        );
+                    .then(id => {
+                        const clone = row.cloneNode(true);
+                        clone.querySelector(".row-number").textContent = tbody.children.length + 1;
+                        clone.querySelector(".id").value = id;
+                        tbody.append(clone);
                     });
                 break;
             case 'delete':
