@@ -2,80 +2,80 @@
 <?php
 include 'connect.php';
 
-$a = $sql->query('SELECT * FROM tab') ?: die('Nie udało się pobrać rekordów');
+$table = $database->query('SELECT * FROM tab') ?: die('Nie udało się pobrać zawartości tabeli. Spróbuj ponownie później.');
 
-$json = json_encode($a->fetchAll(PDO::FETCH_ASSOC));
+$json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
 ?>
 
 <script>
-    let j = 0;
-    const arr = <?= $json ?>;
+    let count = 0;
+    const data = <?= $json ?>;
 
     let html = '<table border><tbody>';
-    arr.forEach((row, index) => {
+    data.forEach((row, index) => {
         html += (
             `<tr id="${row.id}">
-                <td class="numW">${index + 1}</td>
+                <td class="row-number">${index + 1}</td>
                 <td><input value="${row.id}" disabled></td>
                 <td><input value="${row.login}" name="1" data-action="edit"></td>
                 <td><input value="${row.pass}" name="2" data-action="edit"></td>
-                <td><button data-action="dup">duplikuj</button></td>
-                <td><button data-action="del">x</button></td>
+                <td><button data-action="duplicate">duplikuj</button></td>
+                <td><button data-action="delete">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
             </tr>`
         );
-        j++;
+        count++;
     });
     html += '</tbody></table>';
 
     document.write(html);
 
-    document.querySelector('table').addEventListener('input', klik);
-    document.querySelector('table').addEventListener('click', klik);
+    document.querySelector('table').addEventListener('input', handleEvent);
+    document.querySelector('table').addEventListener('click', handleEvent);
 
-    function klik(e) {
-        const getName = e.target.name;
-        const getVal = e.target.value;
-        const getId = e.target.parentElement.parentElement.id;
-        const getAct = e.target.dataset.action;
+    function handleEvent({ target }) {
+        const name = target.name;
+        const value = target.value;
+        const id = target.parentElement.parentElement.id;
+        const action = target.dataset.action;
 
-        switch (getAct) {
-            case 'dup':
+        switch (action) {
+            case 'duplicate':
 
                 break;
-            case 'del':
-                document.getElementById(getId).remove();
-                j--;
+            case 'delete':
+                document.getElementById(id).remove();
+                count--;
                 break;
             case 'clear':
-                document.getElementById(getId).getElementsByTagName('input')[1].value = '';
-                document.getElementById(getId).getElementsByTagName('input')[2].value = '';
+                document.getElementById(id).getElementsByTagName('input')[1].value = '';
+                document.getElementById(id).getElementsByTagName('input')[2].value = '';
                 break;
         }
 
-        if (getAct != 'dup') {
-            fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`);
+        if (action != 'duplicate') {
+            fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
         } else {
-            fetch(`odp.php?name=${getName}&val=${getVal}&id=${getId}&action=${getAct}`)
-                .then(odp => odp.json())
-                .then(v => {
+            fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`)
+                .then(response => response.json())
+                .then(data => {
                     document.querySelector('tbody').insertAdjacentHTML("beforeend", (
-                        `<tr id="${v[0][0]}">
-                            <td class="numW">${j + 1}</td>
-                            <td><input value="${v[0][0]}" disabled></td>
-                            <td><input value="${v[0][1]}" name="1" data-action="edit"></td>
-                            <td><input value="${v[0][2]}" name="2" data-action="edit"></td>
-                            <td><button data-action="dup">duplikuj</button></td>
-                            <td><button data-action="del">x</button></td>
+                        `<tr id="${data[0][0]}">
+                            <td class="row-number">${count + 1}</td>
+                            <td><input value="${data[0][0]}" disabled></td>
+                            <td><input value="${data[0][1]}" name="1" data-action="edit"></td>
+                            <td><input value="${data[0][2]}" name="2" data-action="edit"></td>
+                            <td><button data-action="duplicate">duplikuj</button></td>
+                            <td><button data-action="delete">x</button></td>
                             <td><button data-action="clear">wyczyść</button></td>
                         </tr>`
                     ));
-                    j++;
+                    count++;
                 });
         }
 
-        for (let i = 0; i < document.getElementsByClassName('numW').length; i++) {
-            document.getElementsByClassName('numW')[i].innerText = i + 1;
+        for (let i = 0; i < document.getElementsByClassName('row-number').length; i++) {
+            document.getElementsByClassName('row-number')[i].innerText = i + 1;
         }
     }
 </script>

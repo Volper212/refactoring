@@ -17,20 +17,20 @@ button {
 }
 
 
-button[data-action="dup"] {
+button[data-action="duplicate"] {
 	background-color: #6b97ff;
 }
 
-button[data-action="dup"]:hover {
+button[data-action="duplicate"]:hover {
 	background-color: #3763ca;
 }
 
 
-button[data-action="del"] {
+button[data-action="delete"] {
 	background-color: #ff8179;
 }
 
-button[data-action="del"]:hover {
+button[data-action="delete"]:hover {
 	background-color: #ef4e43;
 }
 
