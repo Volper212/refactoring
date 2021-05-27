@@ -58,6 +58,10 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                     });
                 break;
             case 'delete':
+                let current = row;
+                while (current = current.nextElementSibling) {
+                    current.querySelector(".row-number").textContent--;
+                }
                 row.remove();
                 break;
             case 'clear':
@@ -68,10 +72,6 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
 
         if (action != 'duplicate') {
             fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
-        }
-
-        for (let i = 0; i < document.getElementsByClassName('row-number').length; i++) {
-            document.getElementsByClassName('row-number')[i].innerText = i + 1;
         }
     }
 </script>
