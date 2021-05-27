@@ -17,9 +17,9 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
 
     data.forEach((row, index) => {
         tbody.insertAdjacentHTML("beforeend",
-            `<tr id="${row.id}">
+            `<tr>
                 <td class="row-number">${index + 1}</td>
-                <td><input value="${row.id}" disabled></td>
+                <td><input value="${row.id}" class="id" disabled></td>
                 <td><input value="${row.login}" name="1" data-action="edit"></td>
                 <td><input value="${row.pass}" name="2" data-action="edit"></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
@@ -36,7 +36,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         const name = target.name;
         const value = target.value;
         const row = target.parentElement.parentElement;
-        const id = row.id;
+        const id = row.querySelector(".id").value;
         const action = target.dataset.action;
 
         const request = fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
@@ -47,9 +47,9 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                     .then(response => response.json())
                     .then(data => {
                         tbody.insertAdjacentHTML("beforeend",
-                            `<tr id="${data[0][0]}">
+                            `<tr>
                                 <td class="row-number">${tbody.children.length + 1}</td>
-                                <td><input value="${data[0][0]}" disabled></td>
+                                <td><input value="${data[0][0]}" class="id" disabled></td>
                                 <td><input value="${data[0][1]}" name="1" data-action="edit"></td>
                                 <td><input value="${data[0][2]}" name="2" data-action="edit"></td>
                                 <td><button data-action="duplicate">duplikuj</button></td>
