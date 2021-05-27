@@ -39,9 +39,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         const id = row.id;
         const action = target.dataset.action;
 
+        const request = fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
+
         switch (action) {
             case 'duplicate':
-                fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`)
+                request
                     .then(response => response.json())
                     .then(data => {
                         tbody.insertAdjacentHTML("beforeend",
@@ -68,10 +70,6 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                 row.getElementsByTagName('input')[1].value = '';
                 row.getElementsByTagName('input')[2].value = '';
                 break;
-        }
-
-        if (action != 'duplicate') {
-            fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
         }
     }
 </script>
