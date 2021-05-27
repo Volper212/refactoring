@@ -35,7 +35,8 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
     function handleEvent({ target }) {
         const name = target.name;
         const value = target.value;
-        const id = target.parentElement.parentElement.id;
+        const row = target.parentElement.parentElement;
+        const id = row.id;
         const action = target.dataset.action;
 
         switch (action) {
@@ -57,11 +58,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                     });
                 break;
             case 'delete':
-                document.getElementById(id).remove();
+                row.remove();
                 break;
             case 'clear':
-                document.getElementById(id).getElementsByTagName('input')[1].value = '';
-                document.getElementById(id).getElementsByTagName('input')[2].value = '';
+                row.getElementsByTagName('input')[1].value = '';
+                row.getElementsByTagName('input')[2].value = '';
                 break;
         }
 
