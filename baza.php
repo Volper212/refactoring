@@ -60,8 +60,9 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                 row.remove();
                 break;
             case 'clear':
-                row.getElementsByTagName('input')[1].value = '';
-                row.getElementsByTagName('input')[2].value = '';
+                for (const input of row.querySelectorAll("[data-action=edit]")) {
+                    input.value = '';
+                }
                 break;
         }
     }
