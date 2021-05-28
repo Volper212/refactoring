@@ -15,13 +15,13 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
     const tbody = document.querySelector("tbody");
     const data = <?= $json ?>;
 
-    data.forEach((row, index) => {
+    data.forEach(({ id, login, pass }) => {
         tbody.insertAdjacentHTML("beforeend",
             `<tr>
-                <td class="row-number">${index + 1}</td>
-                <td><input value="${row.id}" class="id" disabled></td>
-                <td><input value="${row.login}" name="login"></td>
-                <td><input value="${row.pass}" name="password"></td>
+                <td class="row-number"></td>
+                <td><input value="${id}" class="id" disabled></td>
+                <td><input value="${login}" name="login"></td>
+                <td><input value="${pass}" name="password"></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
                 <td><button data-action="delete">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
@@ -52,16 +52,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                     .then(response => response.json())
                     .then(id => {
                         const clone = row.cloneNode(true);
-                        clone.querySelector(".row-number").textContent = tbody.children.length + 1;
                         clone.querySelector(".id").value = id;
                         tbody.append(clone);
                     });
                 break;
             case 'delete':
-                let current = row;
-                while (current = current.nextElementSibling) {
-                    current.querySelector(".row-number").textContent--;
-                }
                 row.remove();
                 break;
             case 'clear':

@@ -3,19 +3,18 @@ td, th {
 	padding: 5px;
 }
 
-span
-{
+span {
 	text-decoration: underline;
 }
 
-tr td:nth-child(n+3) > input:hover, tr td:nth-child(n+3) > input:focus {
+tr td:nth-child(n+3) > input:hover,
+tr td:nth-child(n+3) > input:focus {
     background-color: #c3b6b6;
 }
 
 button {
     color: white;
 }
-
 
 button[data-action="duplicate"] {
 	background-color: #6b97ff;
@@ -34,7 +33,6 @@ button[data-action="delete"]:hover {
 	background-color: #ef4e43;
 }
 
-
 button[data-action="clear"] {
 	background-color: #79ff8d;
     color: black;
@@ -42,4 +40,13 @@ button[data-action="clear"] {
 
 button[data-action="clear"]:hover {
 	background-color: #4cb55c;
+}
+
+table {
+	counter-reset: count;
+}
+
+.row-number::before {
+	counter-increment: count;
+	content: counter(count);
 }
