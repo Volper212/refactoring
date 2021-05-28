@@ -38,9 +38,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
     });
 
     tbody.addEventListener('click', ({ target }) => {
+        const { action } = target.dataset;
+        if (action == null)
+            return; 
         const row = target.parentElement.parentElement;
         const id = row.querySelector(".id").value;
-        const { action } = target.dataset;
 
         const request = fetch(`${action}.php?id=${id}`);
 
