@@ -1,5 +1,7 @@
 <?php
 include 'connect.php';
 
-$database->exec('INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id=' . $_GET['id']);
+$statement = $database->prepare("INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id = :id");
+$statement->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+$statement->execute();
 echo $database->lastInsertId();

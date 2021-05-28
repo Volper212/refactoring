@@ -7,7 +7,8 @@ const columns = [
 ];
 
 $column = columns[$_GET['name']];
-$value = $_GET['value'];
-$id = $_GET['id'];
 
-$database->exec("UPDATE tab SET $column = '$value' WHERE id=$id");
+$statement = $database->prepare("UPDATE tab SET $column = :value WHERE id = :id");
+$statement->bindValue(':value', $_GET['value']);
+$statement->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+$statement->execute();

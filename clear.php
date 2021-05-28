@@ -1,4 +1,6 @@
 <?php
 include 'connect.php';
 
-$database->exec('UPDATE tab SET login = "", pass = "" WHERE id=' . $_GET['id']);
+$statement = $database->prepare("UPDATE tab SET login = '', pass = '' WHERE id = :id");
+$statement->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+$statement->execute();
