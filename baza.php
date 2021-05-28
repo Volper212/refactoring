@@ -29,17 +29,20 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         );
     });
 
-    tbody.addEventListener('input', handleEvent);
-    tbody.addEventListener('click', handleEvent);
-
-    function handleEvent({ target }) {
-        const name = target.name;
-        const value = target.value;
+    tbody.addEventListener('input', ({ target }) => {
         const row = target.parentElement.parentElement;
         const id = row.querySelector(".id").value;
-        const action = target.dataset.action;
+        const { name, value } = target;
 
-        const request = fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=${action}`);
+        fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=edit`);
+    });
+
+    tbody.addEventListener('click', ({ target }) => {
+        const row = target.parentElement.parentElement;
+        const id = row.querySelector(".id").value;
+        const { action } = target.dataset;
+
+        const request = fetch(`odp.php?id=${id}&action=${action}`);
 
         switch (action) {
             case 'duplicate':
@@ -65,5 +68,5 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                 }
                 break;
         }
-    }
+    });
 </script>
