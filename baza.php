@@ -42,7 +42,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         const id = row.querySelector(".id").value;
         const { action } = target.dataset;
 
-        const request = fetch(`odp.php?id=${id}&action=${action}`);
+        const request = fetch(`${action}.php?id=${id}`);
 
         switch (action) {
             case 'duplicate':
