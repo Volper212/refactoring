@@ -1,6 +1,13 @@
 <?php
 include 'connect.php';
 
-$remainder = $_GET['name'] % 2;
-$remainder == 0 ? $database->exec('UPDATE tab SET pass = "' . $_GET['value'] . '" WHERE id=' . $_GET['id'])
-    : $database->exec('UPDATE tab SET login = "' . $_GET['value'] . '" WHERE id=' . $_GET['id']);
+const columns = [
+    'login' => 'login',
+    'password' => 'pass'
+];
+
+$column = columns[$_GET['name']];
+$value = $_GET['value'];
+$id = $_GET['id'];
+
+$database->exec("UPDATE tab SET $column = '$value' WHERE id=$id");

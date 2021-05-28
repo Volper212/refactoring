@@ -20,8 +20,8 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
             `<tr>
                 <td class="row-number">${index + 1}</td>
                 <td><input value="${row.id}" class="id" disabled></td>
-                <td><input value="${row.login}" name="1" data-action="edit"></td>
-                <td><input value="${row.pass}" name="2" data-action="edit"></td>
+                <td><input value="${row.login}" name="login" data-action="edit"></td>
+                <td><input value="${row.pass}" name="password" data-action="edit"></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
                 <td><button data-action="delete">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
