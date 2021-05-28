@@ -34,7 +34,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         const id = row.querySelector(".id").value;
         const { name, value } = target;
 
-        fetch(`odp.php?name=${name}&value=${value}&id=${id}&action=edit`);
+        fetch(`edit.php?name=${name}&value=${value}&id=${id}`);
     });
 
     tbody.addEventListener('click', ({ target }) => {
