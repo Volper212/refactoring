@@ -20,8 +20,8 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
             `<tr>
                 <td class="row-number">${index + 1}</td>
                 <td><input value="${row.id}" class="id" disabled></td>
-                <td><input value="${row.login}" name="login" data-action="edit"></td>
-                <td><input value="${row.pass}" name="password" data-action="edit"></td>
+                <td><input value="${row.login}" name="login"></td>
+                <td><input value="${row.pass}" name="password"></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
                 <td><button data-action="delete">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
@@ -65,7 +65,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                 row.remove();
                 break;
             case 'clear':
-                for (const input of row.querySelectorAll("[data-action=edit]")) {
+                for (const input of row.querySelectorAll("input:not(:disabled)")) {
                     input.value = '';
                 }
                 break;
