@@ -8,26 +8,33 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
 ?>
 
 <table border>
-    <tbody></tbody>
+    <tbody>
+        <template>
+            <tr>
+                <td class="row-number"></td>
+                <td><input class="id" disabled></td>
+                <td><input name="login"></td>
+                <td><input name="password"></td>
+                <td><button data-action="duplicate">duplikuj</button></td>
+                <td><button data-action="delete">x</button></td>
+                <td><button data-action="clear">wyczyść</button></td>
+            </tr>
+        </template>
+    </tbody>
 </table>
 
 <script>
     const tbody = document.querySelector("tbody");
+    const template = tbody.querySelector("template");
     const data = <?= $json ?>;
 
-    data.forEach(({ id, login, pass }) => {
-        tbody.insertAdjacentHTML("beforeend",
-            `<tr>
-                <td class="row-number"></td>
-                <td><input value="${id}" class="id" disabled></td>
-                <td><input value="${login}" name="login"></td>
-                <td><input value="${pass}" name="password"></td>
-                <td><button data-action="duplicate">duplikuj</button></td>
-                <td><button data-action="delete">x</button></td>
-                <td><button data-action="clear">wyczyść</button></td>
-            </tr>`
-        );
-    });
+    for (const { id, login, pass } of data) {
+        const row = template.content.cloneNode(true);
+        row.querySelector(".id").value = id;
+        row.querySelector("[name=login]").value = login;
+        row.querySelector("[name=password]").value = pass;
+        tbody.append(row);
+    }
 
     tbody.addEventListener('input', ({ target }) => {
         const row = target.parentElement.parentElement;
