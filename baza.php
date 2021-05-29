@@ -35,7 +35,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
         row.querySelector("[name=password]").value = pass;
 
         row.addEventListener("input", ({ target: { name, value } }) => {
-            fetch(`edit.php?name=${name}&value=${value}&id=${id}`);
+            fetch(`edit.php?name=${name}&value=${encodeURIComponent(value)}&id=${id}`);
         });
 
         row.addEventListener("click", ({ target: { dataset: { action } } }) => {
