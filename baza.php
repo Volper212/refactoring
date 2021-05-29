@@ -4,7 +4,7 @@ include 'connect.php';
 
 $table = $database->query('SELECT * FROM tab') ?: die('Nie udało się pobrać zawartości tabeli. Spróbuj ponownie później.');
 
-$json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
+$json = json_encode($table->fetchAll(PDO::FETCH_NUM));
 ?>
 
 <table border>
@@ -28,11 +28,11 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
     const template = tbody.querySelector("template");
     const data = <?= $json ?>;
 
-    function appendRow({ id, login, pass }) {
+    function appendRow([id, login, password]) {
         const row = template.content.firstElementChild.cloneNode(true);
         row.querySelector(".id").value = id;
         row.querySelector("[name=login]").value = login;
-        row.querySelector("[name=password]").value = pass;
+        row.querySelector("[name=password]").value = password;
 
         row.addEventListener("input", ({ target: { name, value } }) => {
             fetch(`edit.php?name=${name}&value=${encodeURIComponent(value)}&id=${id}`);
@@ -48,7 +48,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
                     request
                         .then(response => response.text())
                         .then(id => {
-                            appendRow({ id, login, pass });
+                            appendRow([id, login, password]);
                         });
                     break;
                 case 'delete':
