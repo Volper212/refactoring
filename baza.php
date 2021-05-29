@@ -28,49 +28,42 @@ $json = json_encode($table->fetchAll(PDO::FETCH_ASSOC));
     const template = tbody.querySelector("template");
     const data = <?= $json ?>;
 
-    for (const { id, login, pass } of data) {
-        const row = template.content.cloneNode(true);
+    function appendRow({ id, login, pass }) {
+        const row = template.content.firstElementChild.cloneNode(true);
         row.querySelector(".id").value = id;
         row.querySelector("[name=login]").value = login;
         row.querySelector("[name=password]").value = pass;
+
+        row.addEventListener("input", ({ target: { name, value } }) => {
+            fetch(`edit.php?name=${name}&value=${value}&id=${id}`);
+        });
+
+        row.addEventListener("click", ({ target: { dataset: { action } } }) => {
+            if (action == null)
+                return;
+            const request = fetch(`${action}.php?id=${id}`);
+
+            switch (action) {
+                case 'duplicate':
+                    request
+                        .then(response => response.text())
+                        .then(id => {
+                            appendRow({ id, login, pass });
+                        });
+                    break;
+                case 'delete':
+                    row.remove();
+                    break;
+                case 'clear':
+                    for (const input of row.querySelectorAll("input:not(:disabled)")) {
+                        input.value = '';
+                    }
+                    break;
+            }
+        });
+
         tbody.append(row);
     }
 
-    tbody.addEventListener('input', ({ target }) => {
-        const row = target.parentElement.parentElement;
-        const id = row.querySelector(".id").value;
-        const { name, value } = target;
-
-        fetch(`edit.php?name=${name}&value=${value}&id=${id}`);
-    });
-
-    tbody.addEventListener('click', ({ target }) => {
-        const { action } = target.dataset;
-        if (action == null)
-            return; 
-        const row = target.parentElement.parentElement;
-        const id = row.querySelector(".id").value;
-
-        const request = fetch(`${action}.php?id=${id}`);
-
-        switch (action) {
-            case 'duplicate':
-                request
-                    .then(response => response.json())
-                    .then(id => {
-                        const clone = row.cloneNode(true);
-                        clone.querySelector(".id").value = id;
-                        tbody.append(clone);
-                    });
-                break;
-            case 'delete':
-                row.remove();
-                break;
-            case 'clear':
-                for (const input of row.querySelectorAll("input:not(:disabled)")) {
-                    input.value = '';
-                }
-                break;
-        }
-    });
+    data.forEach(appendRow);
 </script>
