@@ -31,8 +31,10 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
     function appendRow([id, login, password]) {
         const row = template.content.firstElementChild.cloneNode(true);
         row.querySelector(".id").value = id;
-        row.querySelector("[name=login]").value = login;
-        row.querySelector("[name=password]").value = password;
+        const loginInput = row.querySelector("[name=login]");
+        loginInput.value = login;
+        const passwordInput = row.querySelector("[name=password]");
+        passwordInput.value = password;
 
         row.addEventListener("input", ({ target: { name, value } }) => {
             fetch(`edit.php?name=${name}&value=${encodeURIComponent(value)}&id=${id}`);
@@ -48,7 +50,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
                     request
                         .then(response => response.text())
                         .then(id => {
-                            appendRow([id, login, password]);
+                            appendRow([id, loginInput.value, passwordInput.value]);
                         });
                     break;
                 case 'delete':
