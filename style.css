@@ -16,29 +16,28 @@ button {
     color: white;
 }
 
-button[data-action="duplicate"] {
+button[name="duplicate"] {
 	background-color: #6b97ff;
 }
 
-button[data-action="duplicate"]:hover {
+button[name="duplicate"]:hover {
 	background-color: #3763ca;
 }
 
-
-button[data-action="delete"] {
+button[name="delete"] {
 	background-color: #ff8179;
 }
 
-button[data-action="delete"]:hover {
+button[name="delete"]:hover {
 	background-color: #ef4e43;
 }
 
-button[data-action="clear"] {
+button[name="clear"] {
 	background-color: #79ff8d;
     color: black;
 }
 
-button[data-action="clear"]:hover {
+button[name="clear"]:hover {
 	background-color: #4cb55c;
 }
 

@@ -15,9 +15,9 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
                 <td><input disabled></td>
                 <td><input></td>
                 <td><input></td>
-                <td><button data-action="duplicate">duplikuj</button></td>
-                <td><button data-action="delete">x</button></td>
-                <td><button data-action="clear">wyczyść</button></td>
+                <td><button name="duplicate">duplikuj</button></td>
+                <td><button name="delete">x</button></td>
+                <td><button name="clear">wyczyść</button></td>
             </tr>
         </template>
     </tbody>
@@ -41,27 +41,23 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
             });
         });
 
-        row.addEventListener("click", ({ target: { dataset: { action } } }) => {
-            if (action == null)
-                return;
-            const request = fetch(`${action}.php?id=${id}`);
+        row.querySelector("[name=duplicate]").addEventListener("click", () => {
+            fetch(`duplicate.php?id=${id}`)
+                .then(response => response.text())
+                .then(id => {
+                    appendRow([id, ...editableInputs.map(input => input.value)]);
+                });
+        });
 
-            switch (action) {
-                case 'duplicate':
-                    request
-                        .then(response => response.text())
-                        .then(id => {
-                            appendRow([id, ...editableInputs.map(input => input.value)]);
-                        });
-                    break;
-                case 'delete':
-                    row.remove();
-                    break;
-                case 'clear':
-                    for (const input of editableInputs) {
-                        input.value = '';
-                    }
-                    break;
+        row.querySelector("[name=delete]").addEventListener("click", () => {
+            fetch(`delete.php?id=${id}`);
+            row.remove();
+        });
+
+        row.querySelector("[name=clear]").addEventListener("click", () => {
+            fetch(`clear.php?id=${id}`);
+            for (const input of editableInputs) {
+                input.value = '';
             }
         });
 
