@@ -13,8 +13,8 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
             <tr>
                 <td class="row-number"></td>
                 <td><input disabled></td>
-                <td><input name="login"></td>
-                <td><input name="password"></td>
+                <td><input></td>
+                <td><input></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
                 <td><button data-action="delete">x</button></td>
                 <td><button data-action="clear">wyczyść</button></td>
@@ -36,10 +36,9 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
 
         inputs.forEach((input, index) => {
             input.value = columns[index];
-        });
-
-        row.addEventListener("input", ({ target: { name, value } }) => {
-            fetch(`edit.php?name=${name}&value=${encodeURIComponent(value)}&id=${id}`);
+            input.addEventListener("input", () => {
+                fetch(`edit.php?index=${index}&value=${encodeURIComponent(input.value)}&id=${id}`);
+            });
         });
 
         row.addEventListener("click", ({ target: { dataset: { action } } }) => {
