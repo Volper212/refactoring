@@ -41,21 +41,26 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
             });
         });
 
-        row.querySelector("[name=duplicate]").addEventListener("click", () => {
-            fetch(`duplicate.php?id=${id}`)
+        function listenToButton(name, handler) {
+            row.querySelector(`[name=${name}]`).addEventListener("click", () => {
+                const request = fetch(`${name}.php?id=${id}`);
+                handler(request);
+            });
+        }
+
+        listenToButton("duplicate", request => {
+            request
                 .then(response => response.text())
                 .then(id => {
                     appendRow([id, ...editableInputs.map(input => input.value)]);
                 });
         });
 
-        row.querySelector("[name=delete]").addEventListener("click", () => {
-            fetch(`delete.php?id=${id}`);
+        listenToButton("delete", () => {
             row.remove();
         });
 
-        row.querySelector("[name=clear]").addEventListener("click", () => {
-            fetch(`clear.php?id=${id}`);
+        listenToButton("clear", () => {
             for (const input of editableInputs) {
                 input.value = '';
             }
