@@ -12,7 +12,7 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
         <template>
             <tr>
                 <td class="row-number"></td>
-                <td><input class="id" disabled></td>
+                <td><input disabled></td>
                 <td><input name="login"></td>
                 <td><input name="password"></td>
                 <td><button data-action="duplicate">duplikuj</button></td>
@@ -28,10 +28,12 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
     const template = tbody.querySelector("template");
     const data = <?= $json ?>;
 
-    function appendRow([id, ...columns]) {
+    function appendRow(columns) {
         const row = template.content.firstElementChild.cloneNode(true);
-        row.querySelector(".id").value = id;
-        const inputs = Array.from(row.querySelectorAll("input:not(:disabled)"));
+        const inputs = Array.from(row.getElementsByTagName("input"));
+        const editableInputs = inputs.filter(input => !input.disabled);
+        const id = columns[0];
+
         inputs.forEach((input, index) => {
             input.value = columns[index];
         });
@@ -50,14 +52,14 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
                     request
                         .then(response => response.text())
                         .then(id => {
-                            appendRow([id, ...inputs.map(input => input.value)]);
+                            appendRow([id, ...editableInputs.map(input => input.value)]);
                         });
                     break;
                 case 'delete':
                     row.remove();
                     break;
                 case 'clear':
-                    for (const input of inputs) {
+                    for (const input of editableInputs) {
                         input.value = '';
                     }
                     break;
