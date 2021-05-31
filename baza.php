@@ -28,13 +28,13 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
     const template = tbody.querySelector("template");
     const data = <?= $json ?>;
 
-    function appendRow([id, login, password]) {
+    function appendRow([id, ...columns]) {
         const row = template.content.firstElementChild.cloneNode(true);
         row.querySelector(".id").value = id;
-        const loginInput = row.querySelector("[name=login]");
-        loginInput.value = login;
-        const passwordInput = row.querySelector("[name=password]");
-        passwordInput.value = password;
+        const inputs = Array.from(row.querySelectorAll("input:not(:disabled)"));
+        inputs.forEach((input, index) => {
+            input.value = columns[index];
+        });
 
         row.addEventListener("input", ({ target: { name, value } }) => {
             fetch(`edit.php?name=${name}&value=${encodeURIComponent(value)}&id=${id}`);
@@ -50,14 +50,14 @@ $json = json_encode($table->fetchAll(PDO::FETCH_NUM));
                     request
                         .then(response => response.text())
                         .then(id => {
-                            appendRow([id, loginInput.value, passwordInput.value]);
+                            appendRow([id, ...inputs.map(input => input.value)]);
                         });
                     break;
                 case 'delete':
                     row.remove();
                     break;
                 case 'clear':
-                    for (const input of row.querySelectorAll("input:not(:disabled)")) {
+                    for (const input of inputs) {
                         input.value = '';
                     }
                     break;
