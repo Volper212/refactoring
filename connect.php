@@ -1,9 +1,5 @@
 <?php
-try {
-    $database = new PDO('mysql:host=localhost;dbname=baza;encoding=utf8;port=3306', 'root', '');
-} catch (PDOException $e) {
-    die('Nie udało się nawiązać połączenia z bazą danych. Spróbuj ponownie później');
-}
+$database = new PDO('mysql:host=localhost;dbname=baza;encoding=utf8;port=3306', 'root', '');
 
 function executeWithId(PDO $database, string $statement, array $extraParameters = []): void {
     $statement = $database->prepare($statement);
