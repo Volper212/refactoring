@@ -4,15 +4,13 @@ set_exception_handler(function() {
 });
 
 $database = new PDO('mysql:host=localhost;dbname=baza;encoding=utf8;port=3306', 'root', '');
-const columns = ['login', 'pass'];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $input = json_decode(file_get_contents("php://input"));
     $action = basename($_SERVER["REQUEST_URI"]);
     switch ($action) {
         case "edit":
-            $column = columns[$input->index - 1];
-            $database->prepare("UPDATE tab SET $column = ? WHERE id = ?")->execute($input->parameters);
+            $database->prepare("UPDATE tab SET login = ?, pass = ? WHERE id = ?")->execute($input);
             break;
         case "duplicate":
             $database->prepare("INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id = ?")->execute($input);

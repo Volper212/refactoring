@@ -35,15 +35,14 @@
             const editableInputs = inputs.filter(input => !input.disabled);
             const id = columns[0];
 
+            const getValues = () => editableInputs.map(input => input.value);
+
             inputs.forEach((input, index) => {
                 input.value = columns[index];
                 input.addEventListener("input", () => {
                     fetch("edit", {
                         method: "POST",
-                        body: JSON.stringify({
-                            index,
-                            parameters: [input.value, id],
-                        }),
+                        body: JSON.stringify([...getValues(), id]),
                     });
                 });
             });
@@ -62,7 +61,7 @@
                 request
                     .then(response => response.text())
                     .then(id => {
-                        appendRow([id, ...editableInputs.map(input => input.value)]);
+                        appendRow([id, ...getValues()]);
                     });
             });
 
