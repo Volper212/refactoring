@@ -29,6 +29,13 @@
         const template = tbody.querySelector("template");
         const data = <?= $json ?>;
 
+        function post(action, data) {
+            return fetch(action, {
+                method: "POST",
+                body: JSON.stringify(data),
+            });
+        }
+
         function appendRow(columns) {
             const row = template.content.firstElementChild.cloneNode(true);
             const inputs = Array.from(row.getElementsByTagName("input"));
@@ -40,19 +47,13 @@
             inputs.forEach((input, index) => {
                 input.value = columns[index];
                 input.addEventListener("input", () => {
-                    fetch("edit", {
-                        method: "POST",
-                        body: JSON.stringify([...getValues(), id]),
-                    });
+                    post("edit", [...getValues(), id]);
                 });
             });
 
             function listenToButton(name, handler) {
                 row.querySelector(`[name=${name}]`).addEventListener("click", () => {
-                    const request = fetch(name, {
-                        method: "POST",
-                        body: JSON.stringify([id]),
-                    });
+                    const request = post(name, [id]);
                     handler(request);
                 });
             }
