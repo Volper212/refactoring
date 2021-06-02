@@ -50,7 +50,10 @@
 
             function listenToButton(name, handler) {
                 row.querySelector(`[name=${name}]`).addEventListener("click", () => {
-                    const request = fetch(`${name}.php?id=${id}`);
+                    const request = fetch(name, {
+                        method: "POST",
+                        body: JSON.stringify([id]),
+                    });
                     handler(request);
                 });
             }
