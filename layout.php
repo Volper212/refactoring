@@ -38,7 +38,13 @@
             inputs.forEach((input, index) => {
                 input.value = columns[index];
                 input.addEventListener("input", () => {
-                    fetch(`edit.php?index=${index}&value=${encodeURIComponent(input.value)}&id=${id}`);
+                    fetch("edit", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            index,
+                            parameters: [input.value, id],
+                        }),
+                    });
                 });
             });
 
