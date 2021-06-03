@@ -27,7 +27,6 @@
     <script>
         const tbody = document.querySelector("tbody");
         const template = tbody.querySelector("template");
-        const data = <?= $json ?>;
 
         function post(action, data) {
             return fetch(action, {
@@ -79,7 +78,11 @@
             tbody.append(row);
         }
 
-        data.forEach(appendRow);
+        fetch("select")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(appendRow);
+            });
     </script>
 </body>
 </html>
