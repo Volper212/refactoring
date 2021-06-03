@@ -29,7 +29,7 @@
         const template = tbody.querySelector("template");
 
         function post(action, data) {
-            return fetch(action, {
+            return fetch(`api/${action}`, {
                 method: "POST",
                 body: JSON.stringify(data),
             });
@@ -78,7 +78,7 @@
             tbody.append(row);
         }
 
-        fetch("select")
+        fetch("api/select")
             .then(response => response.json())
             .then(data => {
                 data.forEach(appendRow);
