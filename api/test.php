@@ -37,7 +37,7 @@ class Test extends PHPUnit\Framework\TestCase {
 
     function testDuplicate(): void {
         $id = main($this->database, "duplicate", [2]);
-        $this->assertSame(4, $id);
+        $this->assertSame("4", $id);
         $this->assertTable([
             ["1", "prosty człowiek", "nikt nie pytał0"],
             ["2", "glock", "admin123#"],
