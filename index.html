@@ -28,8 +28,12 @@
         const tbody = document.querySelector("tbody");
         const template = tbody.querySelector("template");
 
+        function fetchJson(action, options) {
+            return fetch(`api/${action}`, options).then(response => response.json());
+        }
+
         function post(action, data) {
-            return fetch(`api/${action}`, {
+            return fetchJson(action, {
                 method: "POST",
                 body: JSON.stringify(data),
             });
@@ -58,11 +62,9 @@
             }
 
             listenToButton("duplicate", request => {
-                request
-                    .then(response => response.json())
-                    .then(id => {
-                        appendRow([id, ...getValues()]);
-                    });
+                request.then(id => {
+                    appendRow([id, ...getValues()]);
+                });
             });
 
             listenToButton("delete", () => {
@@ -78,11 +80,9 @@
             tbody.append(row);
         }
 
-        fetch("api/select")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(appendRow);
-            });
+        fetchJson("select").then(data => {
+            data.forEach(appendRow);
+        });
     </script>
 </body>
 </html>
