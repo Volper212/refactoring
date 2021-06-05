@@ -6,20 +6,20 @@ class Api {
         return $this->database->query("SELECT * FROM tab")->fetchAll(PDO::FETCH_NUM);
     }
 
-    function edit(array $input): void {
-        $this->database->prepare("UPDATE tab SET login = ?, pass = ? WHERE id = ?")->execute($input);
+    function edit(int $id, array $fields): void {
+        $this->database->prepare("UPDATE tab SET login = ?, pass = ? WHERE id = ?")->execute([...$fields, $id]);
     }
 
-    function duplicate(array $input): string {
-        $this->database->prepare("INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id = ?")->execute($input);
+    function duplicate(int $id): string {
+        $this->database->prepare("INSERT INTO tab (login, pass) SELECT login, pass FROM tab WHERE id = ?")->execute([$id]);
         return $this->database->lastInsertId();
     }
 
-    function delete(array $input): void {
-        $this->database->prepare("DELETE FROM tab WHERE id = ?")->execute($input);
+    function delete(int $id): void {
+        $this->database->prepare("DELETE FROM tab WHERE id = ?")->execute([$id]);
     }
 
-    function clear(array $input): void {
-        $this->database->prepare("UPDATE tab SET login = '', pass = '' WHERE id = ?")->execute($input);
+    function clear(int $id): void {
+        $this->database->prepare("UPDATE tab SET login = '', pass = '' WHERE id = ?")->execute([$id]);
     }
 }

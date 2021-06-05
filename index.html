@@ -50,7 +50,7 @@
             inputs.forEach((input, index) => {
                 input.value = columns[index];
                 input.addEventListener("input", () => {
-                    post("edit", [...getValues(), id]);
+                    post("edit", [id, getValues()]);
                 });
             });
 
