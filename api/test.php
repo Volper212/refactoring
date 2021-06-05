@@ -1,12 +1,12 @@
 <?php
-include "main.php";
+require "autoload.php";
 
 class Test extends PHPUnit\Framework\TestCase {
-    private PDO $database;
+    private Api $api;
 
     protected function setUp(): void {
-        $this->database = new PDO("mysql:host=localhost;encoding=utf8", "root", "");
-        $this->database->exec("
+        $database = new PDO("mysql:host=localhost;encoding=utf8", "root", "");
+        $database->exec("
             DROP DATABASE IF EXISTS test;
             CREATE DATABASE test;
             USE test;
@@ -16,6 +16,7 @@ class Test extends PHPUnit\Framework\TestCase {
                 ('glock', 'admin123#'),
                 ('oop', 'egondola');
         ");
+        $this->api = new Api($database);
     }
 
     function testSelect(): void {
@@ -27,7 +28,7 @@ class Test extends PHPUnit\Framework\TestCase {
     }
 
     function testEdit(): void {
-        main($this->database, "edit", ["prosty chłop", "I asked", 1]);
+        $this->api->edit(["prosty chłop", "I asked", 1]);
         $this->assertTable([
             ["1", "prosty chłop", "I asked"],
             ["2", "glock", "admin123#"],
@@ -36,7 +37,7 @@ class Test extends PHPUnit\Framework\TestCase {
     }
 
     function testDuplicate(): void {
-        $id = main($this->database, "duplicate", [2]);
+        $id = $this->api->duplicate([2]);
         $this->assertSame("4", $id);
         $this->assertTable([
             ["1", "prosty człowiek", "nikt nie pytał0"],
@@ -47,7 +48,7 @@ class Test extends PHPUnit\Framework\TestCase {
     }
 
     function testDelete(): void {
-        main($this->database, "delete", [2]);
+        $this->api->delete([2]);
         $this->assertTable([
             ["1", "prosty człowiek", "nikt nie pytał0"],
             ["3", "oop", "egondola"],
@@ -55,7 +56,7 @@ class Test extends PHPUnit\Framework\TestCase {
     }
 
     function testClear(): void {
-        main($this->database, "clear", [3]);
+        $this->api->clear([3]);
         $this->assertTable([
             ["1", "prosty człowiek", "nikt nie pytał0"],
             ["2", "glock", "admin123#"],
@@ -64,6 +65,6 @@ class Test extends PHPUnit\Framework\TestCase {
     }
 
     private function assertTable(array $content): void {
-        $this->assertEquals($content, main($this->database, "select", null));
+        $this->assertEquals($content, $this->api->select());
     }
 }
