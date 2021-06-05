@@ -20,6 +20,6 @@ class Api {
     }
 
     function clear(int $id): void {
-        $this->database->prepare("UPDATE tab SET login = '', pass = '' WHERE id = ?")->execute([$id]);
+        $this->edit($id, ["", ""]);
     }
 }
