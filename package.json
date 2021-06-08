@@ -1,0 +1,24 @@
+{
+  "name": "refactoring",
+  "version": "1.0.0",
+  "description": "A refactoring example done in steps. You can see the progress as commits in git history.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Volper212/refactoring.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Volper212/refactoring/issues"
+  },
+  "homepage": "https://github.com/Volper212/refactoring#readme",
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  }
+}
