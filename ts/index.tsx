@@ -21,7 +21,7 @@ function appendRow([id, ...columns]) {
 
     const buttons = [
         <button
-            name="duplicate"
+            className="duplicate"
             onclick={() => {
                 post("duplicate", [id]).then((id) => {
                     appendRow([id, ...getValues()]);
@@ -31,7 +31,7 @@ function appendRow([id, ...columns]) {
             duplikuj
         </button>,
         <button
-            name="delete"
+            className="delete"
             onclick={() => {
                 post("delete", [id]);
                 row.remove();
@@ -40,7 +40,7 @@ function appendRow([id, ...columns]) {
             x
         </button>,
         <button
-            name="clear"
+            className="clear"
             onclick={() => {
                 post("clear", [id]);
                 for (const input of inputs) {

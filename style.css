@@ -19,28 +19,28 @@ button {
     color: white;
 }
 
-button[name="duplicate"] {
+.duplicate {
 	background-color: #6b97ff;
 }
 
-button[name="duplicate"]:hover {
+.duplicate:hover {
 	background-color: #3763ca;
 }
 
-button[name="delete"] {
+.delete {
 	background-color: #ff8179;
 }
 
-button[name="delete"]:hover {
+.delete:hover {
 	background-color: #ef4e43;
 }
 
-button[name="clear"] {
+.clear {
 	background-color: #79ff8d;
     color: black;
 }
 
-button[name="clear"]:hover {
+.clear:hover {
 	background-color: #4cb55c;
 }
 
