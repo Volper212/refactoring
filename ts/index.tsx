@@ -1,15 +1,6 @@
 const tbody = document.querySelector("tbody");
 
 function appendRow([id, ...columns]) {
-    const row = (
-        <tr>
-            <td className="row-number" />
-            <td>
-                <input disabled value={id} />
-            </td>
-        </tr>
-    );
-
     const inputs = columns.map((value) => (
         <input
             value={value}
@@ -19,42 +10,51 @@ function appendRow([id, ...columns]) {
         />
     ));
 
-    const buttons = [
-        <button
-            className="duplicate"
-            onclick={() => {
-                post("duplicate", [id]).then((id) => {
-                    appendRow([id, ...getValues()]);
-                });
-            }}
-        >
-            duplikuj
-        </button>,
-        <button
-            className="delete"
-            onclick={() => {
-                post("delete", [id]);
-                row.remove();
-            }}
-        >
-            x
-        </button>,
-        <button
-            className="clear"
-            onclick={() => {
-                post("clear", [id]);
-                for (const input of inputs) {
-                    input.value = "";
-                }
-            }}
-        >
-            wyczyść
-        </button>,
-    ];
-
-    const append = (elements) => row.append(...elements.map(wrapInTd));
-    append(inputs);
-    append(buttons);
+    const row = (
+        <tr>
+            <td className="row-number" />
+            <td>
+                <input disabled value={id} />
+            </td>
+            {inputs.map((element) => <td>{element}</td>)}
+            <td>
+                <button
+                    className="duplicate"
+                    onclick={() => {
+                        post("duplicate", [id]).then((id) => {
+                            appendRow([id, ...getValues()]);
+                        });
+                    }}
+                >
+                    duplikuj
+                </button>
+            </td>
+            <td>
+                <button
+                    className="delete"
+                    onclick={() => {
+                        post("delete", [id]);
+                        row.remove();
+                    }}
+                >
+                    x
+                </button>
+            </td>
+            <td>
+                <button
+                    className="clear"
+                    onclick={() => {
+                        post("clear", [id]);
+                        for (const input of inputs) {
+                            input.value = "";
+                        }
+                    }}
+                >
+                    wyczyść
+                </button>
+            </td>
+        </tr>
+    );
 
     const getValues = () => inputs.map((input) => input.value);
 
@@ -75,8 +75,6 @@ function post(action, data) {
         body: JSON.stringify(data),
     });
 }
-
-const wrapInTd = (element) => <td>{element}</td>;
 
 function createElement(name, attributes, ...children) {
     const element = document.createElement(name);
