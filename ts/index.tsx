@@ -2,7 +2,7 @@ const tbody = document.querySelector("tbody");
 
 function appendRow([id, ...columns]) {
     const inputs = columns.map((value) => (
-        <input value={value} oninput={edit} />
+        <input value={value} oninput={update} />
     ));
 
     const row = (
@@ -32,13 +32,14 @@ function appendRow([id, ...columns]) {
         </tr>
     );
 
-    function edit() {
-        callApi("edit", id, getValues());
+    function update() {
+        columns = inputs.map((input) => input.value);
+        callApi("edit", id, columns);
     }
 
     function duplicate() {
         callApi("duplicate", id).then((id) => {
-            appendRow([id, ...getValues()]);
+            appendRow([id, ...columns]);
         });
     }
 
@@ -48,13 +49,11 @@ function appendRow([id, ...columns]) {
     }
 
     function clear() {
-        callApi("clear", id);
         for (const input of inputs) {
             input.value = "";
         }
+        update();
     }
-
-    const getValues = () => inputs.map((input) => input.value);
 
     tbody.append(row);
 }

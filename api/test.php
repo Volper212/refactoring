@@ -55,15 +55,6 @@ class Test extends PHPUnit\Framework\TestCase {
         ]);
     }
 
-    function testClear(): void {
-        $this->api->clear(3);
-        $this->assertTable([
-            ["1", "prosty człowiek", "nikt nie pytał0"],
-            ["2", "glock", "admin123#"],
-            ["3", "", ""],
-        ]);
-    }
-
     private function assertTable(array $content): void {
         $this->assertEquals($content, $this->api->select());
     }

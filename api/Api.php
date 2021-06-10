@@ -18,8 +18,4 @@ class Api {
     function delete(int $id): void {
         $this->database->prepare("DELETE FROM tab WHERE id = ?")->execute([$id]);
     }
-
-    function clear(int $id): void {
-        $this->edit($id, ["", ""]);
-    }
 }
