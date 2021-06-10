@@ -2,12 +2,7 @@ const tbody = document.querySelector("tbody");
 
 function appendRow([id, ...columns]) {
     const inputs = columns.map((value) => (
-        <input
-            value={value}
-            oninput={() => {
-                callApi("edit", id, getValues());
-            }}
-        />
+        <input value={value} oninput={edit} />
     ));
 
     const row = (
@@ -16,47 +11,48 @@ function appendRow([id, ...columns]) {
             <td>
                 <input disabled value={id} />
             </td>
-            {inputs.map((element) => (
-                <td>{element}</td>
+            {inputs.map((input) => (
+                <td>{input}</td>
             ))}
             <td>
-                <button
-                    className="duplicate"
-                    onclick={() => {
-                        callApi("duplicate", id).then((id) => {
-                            appendRow([id, ...getValues()]);
-                        });
-                    }}
-                >
+                <button className="duplicate" onclick={duplicate}>
                     duplikuj
                 </button>
             </td>
             <td>
-                <button
-                    className="delete"
-                    onclick={() => {
-                        callApi("delete", id);
-                        row.remove();
-                    }}
-                >
+                <button className="delete" onclick={delete_}>
                     x
                 </button>
             </td>
             <td>
-                <button
-                    className="clear"
-                    onclick={() => {
-                        callApi("clear", id);
-                        for (const input of inputs) {
-                            input.value = "";
-                        }
-                    }}
-                >
+                <button className="clear" onclick={clear}>
                     wyczyść
                 </button>
             </td>
         </tr>
     );
+
+    function edit() {
+        callApi("edit", id, getValues());
+    }
+
+    function duplicate() {
+        callApi("duplicate", id).then((id) => {
+            appendRow([id, ...getValues()]);
+        });
+    }
+
+    function delete_() {
+        callApi("delete", id);
+        row.remove();
+    }
+
+    function clear() {
+        callApi("clear", id);
+        for (const input of inputs) {
+            input.value = "";
+        }
+    }
 
     const getValues = () => inputs.map((input) => input.value);
 
