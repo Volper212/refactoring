@@ -5,7 +5,7 @@ function appendRow([id, ...columns]) {
         <input
             value={value}
             oninput={() => {
-                post("edit", [id, getValues()]);
+                callApi("edit", id, getValues());
             }}
         />
     ));
@@ -16,12 +16,14 @@ function appendRow([id, ...columns]) {
             <td>
                 <input disabled value={id} />
             </td>
-            {inputs.map((element) => <td>{element}</td>)}
+            {inputs.map((element) => (
+                <td>{element}</td>
+            ))}
             <td>
                 <button
                     className="duplicate"
                     onclick={() => {
-                        post("duplicate", [id]).then((id) => {
+                        callApi("duplicate", id).then((id) => {
                             appendRow([id, ...getValues()]);
                         });
                     }}
@@ -33,7 +35,7 @@ function appendRow([id, ...columns]) {
                 <button
                     className="delete"
                     onclick={() => {
-                        post("delete", [id]);
+                        callApi("delete", id);
                         row.remove();
                     }}
                 >
@@ -44,7 +46,7 @@ function appendRow([id, ...columns]) {
                 <button
                     className="clear"
                     onclick={() => {
-                        post("clear", [id]);
+                        callApi("clear", id);
                         for (const input of inputs) {
                             input.value = "";
                         }
@@ -61,19 +63,16 @@ function appendRow([id, ...columns]) {
     tbody.append(row);
 }
 
-fetchJson("select").then((data) => {
+callApi("select").then((data) => {
     data.forEach(appendRow);
 });
 
-function fetchJson(action, options = null) {
+function callApi(action, ...parameters) {
+    const options =
+        parameters.length === 0
+            ? null
+            : { method: "POST", body: JSON.stringify(parameters) };
     return fetch(`api/${action}`, options).then((response) => response.json());
-}
-
-function post(action, data) {
-    return fetchJson(action, {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
 }
 
 function createElement(name, attributes, ...children) {
